@@ -1,1 +1,103 @@
+HTML
 
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visite Virtuelle - Studio T1bis</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css"/>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+    <style>
+        html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background-color: #000; font-family: sans-serif; display: flex; flex-direction: column; }
+        
+        #panorama { width: 100%; flex: 1; background: #000; }
+
+        /* NAVIGATION GROS BOUTONS */
+        .bottom-nav {
+            display: flex; gap: 5px; padding: 10px; background: #222; justify-content: center; flex-wrap: wrap;
+        }
+        .nav-btn {
+            background: #444; color: white; border: 1px solid #666; padding: 10px 5px; 
+            border-radius: 5px; cursor: pointer; font-size: 0.85rem; flex: 1; text-align: center; min-width: 90px;
+        }
+
+        /* BANDEAU DESCRIPTION EN BAS */
+        #desc-panel {
+            width: 100%; background: #111; color: white; padding: 15px; 
+            box-sizing: border-box; border-top: 1px solid #444; min-height: 90px;
+        }
+
+        /* ACCUEIL */
+        #loading-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #222 url('cuisine_studio.JPG') center/cover no-repeat;
+            z-index: 10000; display: flex; justify-content: center; align-items: center;
+            color: white; text-align: center; transition: opacity 0.8s;
+        }
+        #loading-screen::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: -1; }
+        .hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+        /* --- AJUSTEMENT POLICE POUR MOBILE --- */
+        @media (max-width: 768px) {
+            .nav-btn {
+                font-size: 0.9rem !important;
+                font-weight: bold;
+            }
+            #desc-panel {
+                font-size: 1.1rem !important;
+            }
+            #desc-panel strong {
+                font-size: 1.2rem !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="loading-screen">
+        <div><h1>Studio T1bis</h1><p>Chargement de la visite...</p></div>
+    </div>
+
+    <div id="panorama"></div>
+
+    <div class="bottom-nav">
+        <div class="nav-btn" onclick="viewer.loadScene('cuisine', 0, 0)">🍳 Cuisine</div>
+        <div class="nav-btn" onclick="viewer.loadScene('chambre', 0, 0)">🛏️ Chambre</div>
+        <div class="nav-btn" onclick="viewer.loadScene('sdb', 0, 0)">🚿 SdB</div>
+    </div>
+
+    <div id="desc-panel">
+        <strong id="desc-title">Visite Virtuelle - Studio T1bis</strong>
+        <p id="desc-text" style="margin-top: 5px; font-size: 0.85rem; color: #ccc;">Utilisez les boutons du bas pour naviguer entre les pièces.</p>
+    </div>
+
+    <script>
+        var viewer = pannellum.viewer('panorama', {
+            "default": { 
+                "firstScene": "cuisine", 
+                "autoLoad": true,
+                "hfov": 100, 
+                "showControls": false 
+            },
+            "scenes": {
+                "cuisine": {
+                    "panorama": "cuisine_studio.JPG"
+                },
+                "chambre": {
+                    "panorama": "chambre_studio (1).JPG"
+                },
+                "sdb": {
+                    "panorama": "sdb_studio.JPG"
+                }
+            }
+        });
+
+        viewer.on('load', function() {
+            setTimeout(function() {
+                document.getElementById('loading-screen').classList.add('hidden');
+            }, 300);
+        });
+    </script>
+</body>
+</html>
